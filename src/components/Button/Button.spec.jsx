@@ -24,7 +24,7 @@ describe('<Button/>', () =>{
         expect(fn).toHaveBeenCalledTimes(1);
     });
 
-    it('should be disabled when disabled is true', () =>{
+     it('should be disabled when disabled is true', () =>{
         render(<Button text ="load more" disabled={true} />);
 
         const button = screen.getByRole( 'button', { name: /load more/i});
