@@ -1,41 +1,33 @@
 import { render, screen } from '@testing-library/react'
 
 import {TextInput} from '.'
+import userEvent from '@testing-library/user-event';
 
-const props = {
-    posts:[
-        {
-            id:1,
-            title:'title 1',
-            body: 'body 1',
-            cover: 'img/img1.png',
-        },
-        {
-            id:2,
-            title:'title 2',
-            body: 'body 2',
-            cover: 'img/img2.png',
-        },
-        {
-            id:3,
-            title:'title 3',
-            body: 'body 3',
-            cover: 'img/img3.png',
-        },
-    ]
-}
+describe('<TextInput />', () => {
+    it('should have a value of searchValue', () => {
+        const fn = jest.fn();
+        render(<TextInput handleChange={fn} searchValue={'testando'}/>);
+        const input = screen.getByPlaceholderText(/type your search/i);
+        expect(input.value).toBe('testando');
+    });
+    it('should call handleChange function on each key pressed', () => {
+        const fn = jest.fn();
+        render(<TextInput handleChange={fn} />);
 
-describe('<Posts />', () => {
-    it('should render posts', () =>{
-        render (<Posts {...props} />);
-        expect(screen.getAllByRole('heading', {name: /title/i})).toHaveLength(3);
-        expect(screen.getAllByRole('img', {name: /title/i})).toHaveLength(3);
-        expect(screen.getAllByText( /body/i )).toHaveLength(3);
-        expect(screen.getByRole('img', {name: /title 3/i})).toHaveAttribute('src','img/img3.png') //
+        const input = screen.getByPlaceholderText( /type your search/i );
+        const value = 'o valor';
+
+        userEvent.type(input, value);
+
+        expect(input.value).toBe(value);
+        expect(fn).toHaveBeenCalledTimes(value.length);
     });
 
     it('should match snapshot', () => {
-        const {container} = render (<Posts {...props} />);
+        const fn = jest.fn();
+        const {container} = render(<TextInput handleChange={fn} />);
+        // eslint-disable-next-line testing-library/no-node-access
         expect(container.firstChild).toMatchSnapshot();
+
     });
 });
