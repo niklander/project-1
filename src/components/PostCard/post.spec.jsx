@@ -11,7 +11,14 @@ render(<PostCard {...props} />);
 
 expect(screen.getByRole('img', {name: /Title 1/i} )).toHaveAttribute('src', 'img/img.png');
 
-expect(screen.getByRole('heading', {name: 'Title 1 1'})).toBeInTheDocument()
-
+expect(screen.getByRole('heading', {name: 'Title 11'})).toBeInTheDocument();
+expect(screen.getByText('body 1')).toBeInTheDocument();
 });
+
+it('should match snapshot',  () => {
+   const { container } = render(<PostCard {...props} />);
+   expect(container.firstChild).toMatchSnapshot();
+    
+});
+
 });
